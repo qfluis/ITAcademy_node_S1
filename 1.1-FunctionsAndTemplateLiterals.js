@@ -57,12 +57,36 @@ const mostrarNombreAutoinvocada = (nombre) => {
 }
 
 
+/* EJECUCIÓN CÓDIGO */
+
+console.log("########## ENTREGA1 ##########");
+console.log("##### NIVEL 1 #####");
+console.log("=> Ejercicio 1");
+mostrarNombre("Luis");
+console.log("##### NIVEL 2 #####");
+console.log("=> Ejercicio 1");
+mostrarNombreYApellidos("Luis", "Quevedo", "Ferreiros");
+console.log("=> Ejercicio 2");
+mostrarSuma(5, 3);
+console.log("##### NIVEL 2 #####");
+console.log("=> Ejercicio 1");
+mostrarCuentas();
+console.log("=> Ejercicio 2");
+mostrarNombreAutoinvocada("UsuarioAutoInvocado");
 
 
 
 
+
+
+
+
+
+
+/*
 module.exports.mostrarNombre = mostrarNombre;
 module.exports.mostrarNombreYApellidos = mostrarNombreYApellidos;
 module.exports.mostrarSuma = mostrarSuma;
 module.exports.mostrarCuentas = mostrarCuentas;
 module.exports.mostrarNombreAutoinvocada = mostrarNombreAutoinvocada;
+*/
