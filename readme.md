@@ -3,3 +3,7 @@
 ```
 npm run entrega1
 ```
+## Entrega 2 - Classes & Arrow Functions
+```
+npm run entrega2
+```
