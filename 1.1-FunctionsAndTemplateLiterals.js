@@ -7,11 +7,14 @@ const mostrarNombre = (nombre) => {
 }
 
 // Nivel 2 Ejercicio 1
+/* Mostra per consola el nom i cognoms de l'usuari mitjançant template literals, 
+guardant-los en variables i referenciant-les en la impressió del missatge. */
 const mostrarNombreYApellidos = (nombre, apellido1, apellido2) => {
     console.log(`Hola ${nombre} ${apellido1} ${apellido2} saludos :-)`);
 }
 
 // Nivel 2 Ejercicio 2
+/* Invoca una funció que retorni un valor des de dins d'una template literal. */
 const mostrarSuma = (num1, num2) => {
     console.log(`La suma de ${num1} y ${num2} es ${sumar(num1,num2)}`);
 }
@@ -20,6 +23,10 @@ const sumar = (num1, num2) => {
     return num1 + num2;
 }
 // Nivel 3 Ejercicio 1
+/* Crea una matriu de deu funcions i emplena-la mitjançant un bucle de manera que cada funció compti 
+del 0 al 9 per la consola. Invoca cada funció de l'array iterativament. 
+Haurà de mostrar-se per consola el compte del 0 al 9 deu vegades.
+*/
 // función que cuenta de num1 a num2 y muestra resultado por consola
 const contar = (num1, num2) => {
     if(num1 > num2) {
@@ -47,6 +54,8 @@ const mostrarCuentas = ()=> {
 }
 
 // Nivel 3 Ejercicio 2
+/* Crea una funció anònima autoinvocable igualada a una variable que mostri per consola el nom 
+de l'usuari rebut com a paràmetre. */
 const mostrarNombreAutoinvocada = (nombre) => {
 
     const miFuncionAutoinvocada = ((nom)=> {
