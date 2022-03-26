@@ -17,3 +17,7 @@ npm run entrega3
 ```
 npm run entrega4
 ```
+## Entrega 5 - Node Utils
+```
+npm run entrega5
+```
