@@ -13,3 +13,7 @@ npm run entrega2
 ```
 npm run entrega3
 ```
+## Entrega 4 - Async & Await
+```
+npm run entrega4
+```

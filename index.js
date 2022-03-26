@@ -1,7 +1,9 @@
+/*
 const entrega1 = require("./1.1-FunctionsAndTemplateLiterals");
 const entrega2 = require("./1.2-ClassesAndArrowFunctions");
 const { Persona } = require("./1.2-ClassesAndArrowFunctions");
 const entrega3 = require("./1.3-PromisesAndCallbacks");
+*/
 
 // TODO: HACER SWITCH, para elegir entrega / ejercicios ¿?
 

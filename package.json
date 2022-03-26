@@ -8,6 +8,7 @@
     "entrega1": "node 1.1-FunctionsAndTemplateLiterals.js",
     "entrega2": "node 1.2-ClassesAndArrowFunctions.js",
     "entrega3": "node 1.3-PromisesAndCallbacks.js",
+    "entrega4": "node 1.4-AsyncAwait.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Luis Quevedo",
