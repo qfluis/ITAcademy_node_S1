@@ -86,14 +86,65 @@ const codificarFichero = () => {
     }
     
     try {
-        console.log("Esperando");
-        let fileHex = fs.writeFileSync('entrega5_hex.txt', file, 'hex');
-        let fileBase64 = fs.writeFileSync('entrega5_base64.txt', file, 'base64');
-        console.log("holis");
-        return {fileHex, fileBase64 }
+        fs.writeFileSync('entrega5_hex.txt', file, 'hex');
+        fs.writeFileSync('entrega5_base64.txt', file, 'base64');        
     } catch ( err ){
         console.log( err.message );
     }       
+}
+
+const crypto = require("crypto");
+
+
+const encriptarDatos = (datos) => {
+    
+    const algoritmo = 'aes-192-cbc';
+    const clave ="holaquetalsoylaclave"
+
+    const key = crypto.scryptSync(clave,'salt',24);
+    const iv = crypto.randomFillSync(new Uint8Array(16));
+    const cipher = crypto.createCipheriv(algoritmo, key, iv);
+
+    let encrypted = '';
+    cipher.setEncoding('hex');
+
+    cipher.on('data', (chunk) => encrypted += chunk);
+    //cipher.on('end', () => console.log("RESULTADO:", encrypted));
+
+    cipher.write(datos);
+    cipher.end();
+
+    return encrypted;
+}
+
+const desencriptarDatos = (datos) => {
+    //TODO: https://ciberninjas.com/cifrado-node/
+    //crypto.scryptSync()
+}
+
+const encriptarFicheros = () => {
+    let file_hex;
+    let file_base64;
+    try {
+        file_hex = fs.readFileSync('entrega5_hex.txt', 'hex');
+        file_base64 = fs.readFileSync('entrega5_base64.txt', 'base64');
+    } catch ( err ){
+        console.log( err.message );
+        return
+    }
+    const file_hex_enc = encriptarDatos(file_hex);
+    const file_base64_enc = encriptarDatos(file_base64);
+
+    try {
+        fs.writeFileSync('entrega5_hex.txt', file_hex_enc, 'hex');
+        fs.writeFileSync('entrega5_base64.txt', file_base64_enc, 'base64');        
+    } catch ( err ){
+        console.log( err.message );
+    }     
+}
+
+const desencriptarFicheros = () => {
+
 }
 
 
@@ -115,8 +166,11 @@ comprimirFichero();
 
 // Nivel 2 Ejercicio 2
 //TODO: ¿ESTÁ OK?
+/*
 const cp = require('child_process');
 cp.fork('1.5-ContenidoDirectorio.js');
-
+*/
 // Nivel 3 Ejercicio 1
-console.log(codificarFichero());
+codificarFichero();
+
+encriptarFicheros();
