@@ -25,7 +25,7 @@ const escribirEnFichero = (texto) => {
         }
     });*/
     try {
-        fs.appendFileSync('entrega5.txt', (new Date()).toISOString() + " - " + texto+"\n" );
+        fs.appendFileSync('./files/0-original/entrega5.txt', (new Date()).toISOString() + " - " + texto+"\n" );
     } catch ( err ){
         console.log( err.message );
     }
@@ -38,7 +38,7 @@ Crea una altra funció que mostri per consola el contingut
 del fitxer de l'exercici anterior.
 */
 const leerFichero = () => {
-    fs.readFile('entrega5.txt', 'utf-8',( err, data ) => {
+    fs.readFile('./files/0-original/entrega5.txt', 'utf-8',( err, data ) => {
         if(err){
             console.log( err.message );
             return;
@@ -55,8 +55,8 @@ const zlib = require('zlib');
 
 const comprimirFichero = () => {
     const gzip = zlib.createGzip();
-    const r = fs.createReadStream('entrega5.txt');
-    const w = fs.createWriteStream('entrega5.txt.gz');
+    const r = fs.createReadStream('./files/0-original/entrega5.txt');
+    const w = fs.createWriteStream('./files/0-original/entrega5.txt.gz');
     r.pipe(gzip).pipe(w);
 }
 
@@ -79,34 +79,33 @@ a generar una còpia de l'inicial
 const codificarFichero = () => {
     let file;
     try {
-        file = fs.readFileSync('entrega5.txt', 'utf-8');
+        file = fs.readFileSync('./files/0-original/entrega5.txt', 'utf-8');
     } catch ( err ){
         console.log( err.message );
         return
     }
     
     try {
-        fs.writeFileSync('entrega5_hex.txt', file, 'hex');
-        fs.writeFileSync('entrega5_base64.txt', file, 'base64');        
+        fs.writeFileSync('./files/1-codified/entrega5_hex.txt', file, 'hex');
+        fs.writeFileSync('./files/1-codified/entrega5_base64.txt', file, 'base64');        
     } catch ( err ){
         console.log( err.message );
     }       
 }
 
 const crypto = require("crypto");
+const clave ="holaquetalsoylaclave";                    // ¿? clave privada
+const salt = "UnPocoDeSalt";                            // Salt
+const algoritmo = 'aes-192-cbc';                        // algoritmo
+const iv = crypto.randomFillSync(new Uint8Array(16));   // ¿?
 
 
-const encriptarDatos = (datos) => {
-    
-    const algoritmo = 'aes-192-cbc';
-    const clave ="holaquetalsoylaclave"
-
-    const key = crypto.scryptSync(clave,'salt',24);
-    const iv = crypto.randomFillSync(new Uint8Array(16));
+const encriptarDatos = (datos, encoding) => {    
+    const key = crypto.scryptSync(clave, salt, 24);
     const cipher = crypto.createCipheriv(algoritmo, key, iv);
 
     let encrypted = '';
-    cipher.setEncoding('hex');
+    cipher.setEncoding(encoding);   // ¿?
 
     cipher.on('data', (chunk) => encrypted += chunk);
     //cipher.on('end', () => console.log("RESULTADO:", encrypted));
@@ -117,34 +116,66 @@ const encriptarDatos = (datos) => {
     return encrypted;
 }
 
-const desencriptarDatos = (datos) => {
+const desencriptarDatos = (datos, encoding) => {
     //TODO: https://ciberninjas.com/cifrado-node/
-    //crypto.scryptSync()
+    const nkey = crypto.scryptSync(clave, salt, 24); 
+    
+    const decipher = crypto.createDecipheriv(algoritmo, nkey, iv);
+    
+    let decrypted = '';
+    decipher.on('readable', ()=>{
+        while(null !== (chunk= decipher.read())) {
+            decrypted += chunk.toString('utf-8'); // ????
+        }
+    });
+    //decipher.on('end', () => console.log(decrypted));
+    decipher.on('error', ( err ) => console.log( err.message ));
+
+    decipher.write(datos, encoding);
+    decipher.end();
+    return decrypted;
 }
 
 const encriptarFicheros = () => {
     let file_hex;
     let file_base64;
     try {
-        file_hex = fs.readFileSync('entrega5_hex.txt', 'hex');
-        file_base64 = fs.readFileSync('entrega5_base64.txt', 'base64');
+        file_hex = fs.readFileSync('./files/1-codified/entrega5_hex.txt', 'hex');
+        file_base64 = fs.readFileSync('./files/1-codified/entrega5_base64.txt', 'base64');
     } catch ( err ){
         console.log( err.message );
         return
     }
-    const file_hex_enc = encriptarDatos(file_hex);
-    const file_base64_enc = encriptarDatos(file_base64);
+    const file_hex_enc = encriptarDatos(file_hex, 'hex');
+    const file_base64_enc = encriptarDatos(file_base64, 'base64');
 
     try {
-        fs.writeFileSync('entrega5_hex.txt', file_hex_enc, 'hex');
-        fs.writeFileSync('entrega5_base64.txt', file_base64_enc, 'base64');        
+        fs.writeFileSync('./files/2-encrypted/entrega5_hex.txt', file_hex_enc, 'hex');
+        fs.writeFileSync('./files/2-encrypted/entrega5_base64.txt', file_base64_enc, 'base64');        
     } catch ( err ){
         console.log( err.message );
     }     
 }
 
 const desencriptarFicheros = () => {
+    let file_hex;
+    let file_base64;
+    try {
+        file_hex = fs.readFileSync('./files/2-encrypted/entrega5_hex.txt', 'hex');
+        file_base64 = fs.readFileSync('./files/2-encrypted/entrega5_base64.txt', 'base64');
+    } catch ( err ){
+        console.log( err.message );
+        return
+    }
+    const file_hex_desenc = desencriptarDatos(file_hex, 'hex');
+    const file_base64_desenc = desencriptarDatos(file_base64, 'base64');
 
+    try {
+        fs.writeFileSync('./files/3-decrypted/entrega5_hex_des.txt', file_hex_desenc, 'utf-8');
+        fs.writeFileSync('./files/3-decrypted/entrega5_base64_des.txt', file_base64_desenc, 'utf-8');        
+    } catch ( err ){
+        console.log( err.message );
+    } 
 }
 
 
@@ -166,11 +197,23 @@ comprimirFichero();
 
 // Nivel 2 Ejercicio 2
 //TODO: ¿ESTÁ OK?
+
 /*
 const cp = require('child_process');
 cp.fork('1.5-ContenidoDirectorio.js');
 */
+
 // Nivel 3 Ejercicio 1
 codificarFichero();
 
 encriptarFicheros();
+
+desencriptarFicheros();
+
+
+/*
+const datos = "Hola Que Tal";
+const datos_encriptados = encriptarDatos(datos);
+console.log(datos_encriptados);
+console.log(desencriptarDatos(datos_encriptados));
+*/

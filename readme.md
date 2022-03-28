@@ -21,3 +21,9 @@ npm run entrega4
 ```
 npm run entrega5
 ```
+Funciones:
+```
+codificarFichero();     // codifica el fichero en la carpeta 1-codified
+encriptarFicheros();    // encripta los ficheros en carpeta 2-encrypted
+desencriptarFicheros(); // desencripta los ficheros en carpeta 3-decrypted
+```
