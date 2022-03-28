@@ -38,7 +38,7 @@ Crea una altra funció que mostri per consola el contingut
 del fitxer de l'exercici anterior.
 */
 const leerFichero = () => {
-    fs.readFile('./files/0-original/entrega5.txt', 'utf-8',( err, data ) => {
+    fs.readFile('./files/0-original/entrega5.txt', 'utf8',( err, data ) => {
         if(err){
             console.log( err.message );
             return;
@@ -79,7 +79,7 @@ a generar una còpia de l'inicial
 const codificarFichero = () => {
     let file;
     try {
-        file = fs.readFileSync('./files/0-original/entrega5.txt', 'utf-8');
+        file = fs.readFileSync('./files/0-original/entrega5.txt', 'utf8');
     } catch ( err ){
         console.log( err.message );
         return
@@ -98,6 +98,40 @@ const clave ="holaquetalsoylaclave";                    // ¿? clave privada
 const salt = "UnPocoDeSalt";                            // Salt
 const algoritmo = 'aes-192-cbc';                        // algoritmo
 const iv = crypto.randomFillSync(new Uint8Array(16));   // ¿?
+
+// https://gist.github.com/siwalikm/8311cf0a287b98ef67c73c1b03b47154
+
+/*
+const crypto = require('crypto');
+const ENC_KEY = "bf3c199c2470cb477d907b1e0917c17b"; // set random encryption key
+const IV = "5183666c72eec9e4"; // set random initialisation vector
+// ENC_KEY and IV can be generated as crypto.randomBytes(32).toString('hex');
+
+const phrase = "who let the dogs out";
+
+var encrypt = ((val) => {
+  let cipher = crypto.createCipheriv('aes-256-cbc', ENC_KEY, IV);
+  let encrypted = cipher.update(val, 'utf8', 'base64');
+  encrypted += cipher.final('base64');
+  return encrypted;
+});
+
+var decrypt = ((encrypted) => {
+  let decipher = crypto.createDecipheriv('aes-256-cbc', ENC_KEY, IV);
+  let decrypted = decipher.update(encrypted, 'base64', 'utf8');
+  return (decrypted + decipher.final('utf8'));
+});
+
+
+
+encrypted_key = encrypt(phrase);
+original_phrase = decrypt(encrypted_key);
+
+// star this gist if you found it useful
+
+
+
+*/
 
 
 const encriptarDatos = (datos, encoding) => {    
@@ -118,6 +152,7 @@ const encriptarDatos = (datos, encoding) => {
 
 const desencriptarDatos = (datos, encoding) => {
     //TODO: https://ciberninjas.com/cifrado-node/
+    console.log(encoding);
     const nkey = crypto.scryptSync(clave, salt, 24); 
     
     const decipher = crypto.createDecipheriv(algoritmo, nkey, iv);
@@ -125,7 +160,7 @@ const desencriptarDatos = (datos, encoding) => {
     let decrypted = '';
     decipher.on('readable', ()=>{
         while(null !== (chunk= decipher.read())) {
-            decrypted += chunk.toString('utf-8'); // ????
+            decrypted += chunk;//.toString(encoding); // ????utf8
         }
     });
     //decipher.on('end', () => console.log(decrypted));
@@ -139,19 +174,23 @@ const desencriptarDatos = (datos, encoding) => {
 const encriptarFicheros = () => {
     let file_hex;
     let file_base64;
+    let file_utf8;
     try {
         file_hex = fs.readFileSync('./files/1-codified/entrega5_hex.txt', 'hex');
         file_base64 = fs.readFileSync('./files/1-codified/entrega5_base64.txt', 'base64');
+        file_utf8 = fs.readFileSync('./files/0-original/entrega5.txt', 'utf8');
     } catch ( err ){
         console.log( err.message );
         return
     }
     const file_hex_enc = encriptarDatos(file_hex, 'hex');
     const file_base64_enc = encriptarDatos(file_base64, 'base64');
+    const file_utf8_enc = encriptarDatos(file_utf8, 'utf8');
 
     try {
         fs.writeFileSync('./files/2-encrypted/entrega5_hex.txt', file_hex_enc, 'hex');
-        fs.writeFileSync('./files/2-encrypted/entrega5_base64.txt', file_base64_enc, 'base64');        
+        fs.writeFileSync('./files/2-encrypted/entrega5_base64.txt', file_base64_enc, 'base64');      
+        fs.writeFileSync('./files/2-encrypted/entrega5_utf8.txt', file_utf8_enc, 'utf8');     
     } catch ( err ){
         console.log( err.message );
     }     
@@ -160,19 +199,24 @@ const encriptarFicheros = () => {
 const desencriptarFicheros = () => {
     let file_hex;
     let file_base64;
+    let file_utf8;
     try {
         file_hex = fs.readFileSync('./files/2-encrypted/entrega5_hex.txt', 'hex');
         file_base64 = fs.readFileSync('./files/2-encrypted/entrega5_base64.txt', 'base64');
+        file_utf8 = fs.readFileSync('./files/2-encrypted/entrega5_utf8.txt', 'utf8');
     } catch ( err ){
         console.log( err.message );
         return
     }
+   
     const file_hex_desenc = desencriptarDatos(file_hex, 'hex');
     const file_base64_desenc = desencriptarDatos(file_base64, 'base64');
+    const file_utf8_desenc = desencriptarDatos(file_utf8, 'utf8')
 
     try {
-        fs.writeFileSync('./files/3-decrypted/entrega5_hex_des.txt', file_hex_desenc, 'utf-8');
-        fs.writeFileSync('./files/3-decrypted/entrega5_base64_des.txt', file_base64_desenc, 'utf-8');        
+        fs.writeFileSync('./files/3-decrypted/entrega5_hex_des.txt', file_hex_desenc, 'hex');
+        fs.writeFileSync('./files/3-decrypted/entrega5_base64_des.txt', file_base64_desenc, 'base64');        
+        fs.writeFileSync('./files/3-decrypted/entrega5_utf8_des.txt', file_utf8_desenc, 'utf8');        
     } catch ( err ){
         console.log( err.message );
     } 
@@ -204,12 +248,16 @@ cp.fork('1.5-ContenidoDirectorio.js');
 */
 
 // Nivel 3 Ejercicio 1
+/*
 codificarFichero();
 
 encriptarFicheros();
 
 desencriptarFicheros();
-
+*/
+const encriptado = encriptarDatos("Holiwi de kiwi",'base64');
+console.log(encriptado);
+console.log(desencriptarDatos(encriptado,'base64'));
 
 /*
 const datos = "Hola Que Tal";
