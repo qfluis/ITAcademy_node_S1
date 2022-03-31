@@ -27,19 +27,11 @@ const sumar = (num1, num2) => {
 del 0 al 9 per la consola. Invoca cada funció de l'array iterativament. 
 Haurà de mostrar-se per consola el compte del 0 al 9 deu vegades.
 */
-// función que cuenta de num1 a num2 y muestra resultado por consola
-const contar = (num1, num2) => {
-    if(num1 > num2) {
-        let numtmp = num2;
-        num2 = num1;
-        num1 = numtmp;
+// función que cuenta de 0 a 9 y muestra los números por consola
+const contar = () => {  
+    for (let i = 0; i <= 9; i++){
+        console.log(i);
     }
-
-    let resultado = "";
-    for (let i = num1; i <= num2; i++){
-        resultado += i;
-    }
-    console.log(resultado);
 }
 // array de Funciones, se podía haber hecho a mano
 const arrayFunciones = [];
@@ -49,7 +41,7 @@ for (let i=0; i<= 9; i++){
 
 const mostrarCuentas = ()=> {
     for (funcion of arrayFunciones) {
-        funcion(0,9);
+        funcion();
     }
 }
 
@@ -77,7 +69,7 @@ console.log("=> Ejercicio 1");
 mostrarNombreYApellidos("Luis", "Quevedo", "Ferreiros");
 console.log("=> Ejercicio 2");
 mostrarSuma(5, 3);
-console.log("##### NIVEL 2 #####");
+console.log("##### NIVEL 3 #####");
 console.log("=> Ejercicio 1");
 mostrarCuentas();
 console.log("=> Ejercicio 2");
