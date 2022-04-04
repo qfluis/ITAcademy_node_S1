@@ -1,11 +1,27 @@
 // Nivel 1 Ejercicio 1
 /* Mostra per la consola el resultat d'una arrow function autoinvocable 
 que sumi dos nombres. */
+
+// Para que quede bonito
+console.log("########## ENTREGA2 ##########");
+console.log("##### NIVEL 1 #####");
+console.log("=> Ejercicio 1");
+
+const num1 = 5;
+const num2 = 8;
+console.log(((n1,n2) =>{
+    return n1+n2;
+})(num1, num2));
+
+
+
+/*
 const mostrarSuma = (num1, num2)=>{    
     const sumaAutoInvocada = ((n1, n2) => {
         console.log(n1 + n2);
     })(num1, num2);
 } // TODO: DUDA ¿Utilidad?
+*/
 
 // Nivel 2 Ejercicio 1
 /* Crea una arrow function que, rebent un paràmetre, retorni un objecte 
@@ -35,28 +51,38 @@ class Persona {
 Invoca-la amb diferents definicions. */
 
 // TODO: DUDA:¿¿En principio una clase abstracta no se debería instanciar??
-class Animal {
-    constructor(tipo, nombre) {
-        this.tipo = tipo;
-        this.nombre = nombre;        
+class EnteAbstracto {
+    constructor(nombre) {
+        if(this.constructor == EnteAbstracto) {
+            throw Error("Nou, no se puede instanciar esta clase");
+        }    
+        this.nombre = nombre;    
     } 
 
+    nombre = "";
+
     saludar() {
-        console.log(`Hola me llamo ${this.nombre} y soy del tipo ${this.tipo}`);
+        console.log(`Soy ${this.nombre}: Hola desde lo abstracto`);
     }
 }
 
-const crearAnimal = (tipo, nombre) => {
-    return new Animal(tipo, nombre);
+const crearObjeto = (nombre) => {
+    /*let obj = {
+        nombre: EnteAbstracto.prototype.nombre,
+        saludar: EnteAbstracto.prototype.saludar
+    }*/
+    let obj = Object.create(EnteAbstracto.prototype);
+    obj.nombre = nombre || "Desconocido";
+    return obj;
 }
 
 
 /* EJECUCIÓN CÓDIGO */
-
+/*
 console.log("########## ENTREGA2 ##########");
 console.log("##### NIVEL 1 #####");
-console.log("=> Ejercicio 1");
-mostrarSuma(6,10);
+Ver linea 6 🙂
+*/
 console.log("##### NIVEL 2 #####");
 console.log("=> Ejercicio 1");
 console.log(creaObjeto("Luis"));
@@ -65,10 +91,17 @@ const miPersona = new Persona("Luis");
 miPersona.dirNom();
 console.log("##### NIVEL 3 #####");
 console.log("=> Ejercicio 1");
-const animal1 = crearAnimal("Gato", "Gardfield");
-const animal2 = crearAnimal("Perro", "Laica");
-animal1.saludar();
-animal2.saludar();
+const objetoAbstracto = crearObjeto("Luis");
+const objetoAbstracto2 = crearObjeto("Peter");
+const objetoAbstracto3 = crearObjeto();
+
+objetoAbstracto.saludar();
+objetoAbstracto2.saludar();
+objetoAbstracto3.saludar();
+
+console.log(objetoAbstracto instanceof EnteAbstracto);
+console.log(objetoAbstracto2 instanceof EnteAbstracto);
+//animal.saludar();
 
 
 
