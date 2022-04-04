@@ -45,19 +45,6 @@ const mostrarCuentas = ()=> {
     }
 }
 
-// Nivel 3 Ejercicio 2
-/* Crea una funció anònima autoinvocable igualada a una variable que mostri per consola el nom 
-de l'usuari rebut com a paràmetre. */
-const mostrarNombreAutoinvocada = (nombre) => {
-
-    const miFuncionAutoinvocada = ((nom)=> {
-        console.log(nom);
-    })(nombre);   
-    
-    // ¿Utilidad? 
-}
-
-
 /* EJECUCIÓN CÓDIGO */
 
 console.log("########## ENTREGA1 ##########");
@@ -73,10 +60,22 @@ console.log("##### NIVEL 3 #####");
 console.log("=> Ejercicio 1");
 mostrarCuentas();
 console.log("=> Ejercicio 2");
-mostrarNombreAutoinvocada("UsuarioAutoInvocado");
+//mostrarNombreAutoinvocada("UsuarioAutoInvocado");
 
+// Nivel 3 Ejercicio 2
+/* Crea una funció anònima autoinvocable igualada a una variable que mostri per consola el nom 
+de l'usuari rebut com a paràmetre. */
 
-
+// creo que leyendo textualmente el enunciado sería: 
+const miFuncionAutoinvocada = ((nom)=> {
+    console.log(nom);
+})("Usuario1");   
+   
+/* Otra opción, que ya no coincide con el enunciado, pero con la que hariamos algo con la variable igualada...
+const miFuncionAutoinvocada2 = ((nom)=> {
+    return nom;
+})("Usuario2"); 
+console.log(miFuncionAutoinvocada2);  */
 
 
 
