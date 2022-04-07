@@ -33,6 +33,11 @@ const probarPromesa = ()=>{
 un missatge o un altre (que s'imprimirà per consola) en funció del paràmetre rebut. */
 const imprimirBonito = texto => console.log(`N1E2 > --%% ${texto} %%--`);
 const textoAImprimir = (parametro, funcion)=>{
+    if (parametro.length > 12) {
+        parametro = "texto laaaaaaaaaargo: " + parametro;
+    } else {
+        parametro = "texto corto: " + parametro;
+    }
     funcion(parametro);
 }
 // Nivel 2 Ejercicio 1
@@ -113,6 +118,7 @@ const getEmployeeAndSalary = (id) => {
 probarPromesa();
 // Ejercicio 2
 textoAImprimir("Holiwi", imprimirBonito);
+textoAImprimir("Holiwi de kiwi", imprimirBonito);
 
 // NIVEL 2
 // Ejercicio 1
