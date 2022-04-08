@@ -191,6 +191,15 @@ const encriptarFicheros = () => {
     } catch ( err ){
         console.log( err.message );
     }     
+
+    // Eliminar ficheros anteriores
+    try {
+        fs.rmSync('./files/1-codified/entrega5_hex.txt');
+        fs.rmSync('./files/1-codified/entrega5_base64.txt');
+    } catch ( err ) {
+        console.log( err.message );
+    }
+
 }
 
 const desencriptarFicheros = () => {
@@ -207,9 +216,14 @@ const desencriptarFicheros = () => {
     const file_hex_desenc = desencriptarDatos(file_hex, 'hex');
     const file_base64_desenc = desencriptarDatos(file_base64, 'base64');
 
+    const bufferHex = Buffer.from(file_hex_desenc,'hex');
+    const bufferBase64 = Buffer.from(file_base64_desenc, 'base64');
+    const fileUtf8FromHex = bufferHex.toString('utf8');
+    const fileUtf8FromBase64 = bufferBase64.toString('utf8');
+
     try {
-        fs.writeFileSync('./files/3-decrypted/entrega5_hex_des.txt', file_hex_desenc, 'hex');
-        fs.writeFileSync('./files/3-decrypted/entrega5_base64_des.txt', file_base64_desenc, 'base64');   
+        fs.writeFileSync('./files/3-decrypted/entrega5_hex_des.txt', fileUtf8FromHex, 'hex');
+        fs.writeFileSync('./files/3-decrypted/entrega5_base64_des.txt', fileUtf8FromBase64, 'base64');   
     } catch ( err ){
         console.log( err.message );
     } 
