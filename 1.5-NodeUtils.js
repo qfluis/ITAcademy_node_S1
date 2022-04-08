@@ -90,9 +90,8 @@ l'ordinador utilizant Node Child Processes. */
 // en fichero 1.5-ContenidoDirectorio.js
 //TODO: ¿ESTÁ OK?
 
-// TODO: QUITAR COMENTARIO
-//const cp = require('child_process');
-//cp.fork('1.5-ContenidoDirectorio.js');
+const cp = require('child_process');
+cp.fork('1.5-ContenidoDirectorio.js');
 
 
 
