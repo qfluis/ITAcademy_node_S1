@@ -1,8 +1,7 @@
-// Nivel 1 Ejercicio 1
-/*
-Crea una funció que imprimeixi recursivament un missatge per la 
-consola amb demores d'un segon.
-*/
+// Nivel 1 Ejercicio 1 ###################################################################################
+//Crea una funció que imprimeixi recursivament un missatge per la 
+//consola amb demores d'un segon.
+
 
 const mensajeRepetido = () => {
     setInterval(()=>{
@@ -10,37 +9,57 @@ const mensajeRepetido = () => {
     }, 1000);
 }
 
-// Nivel 1 Ejercicio 2
-/*
-Crea una funció que, en executar-la, escrigui una frase en un fitxer.
-*/
+//mensajeRepetido(); // TODO: quitar comentario
+
+// Nivel 1 Ejercicio 2 ###################################################################################
+//Crea una funció que, en executar-la, escrigui una frase en un fitxer.
+
 const fs = require('fs');
 
-const escribirEnFichero = (texto) => {
-    try {
-        fs.appendFileSync('./files/0-original/entrega5.txt', (new Date()).toISOString() + " - " + texto+"\n" );
-    } catch ( err ){
-        console.log( err.message );
-    }
+// función necesaria para crear la estructura de carpetas en las que se basan los
+// demás ejercicios
+const crearEstructuraCarpetas = () => {
+    const arrCarpetas = ['./files', './files/0-original', './files/1-codified', './files/2-encrypted', './files/3-decrypted']
     
+    for (carpeta of arrCarpetas) {
+        try {
+            fs.mkdirSync(carpeta);
+        } catch {}
+    }  
 }
 
-// Nivel 1 Ejercicio 3
-/*
-Crea una altra funció que mostri per consola el contingut 
-del fitxer de l'exercici anterior.
-*/
+const escribirEnFichero = (texto) => {
+    
+    try {        
+        fs.writeFileSync('./files/0-original/entrega5.txt', (new Date()).toISOString() + " - " + texto+"\n" );
+        //fs.appendFileSync('./files/0-original/entrega5.txt', (new Date()).toISOString() + " - " + texto+"\n" );
+    } catch ( err ){
+        console.log( err.message );
+    }    
+}
+
+crearEstructuraCarpetas();
+escribirEnFichero("hola que tal");
+
+// Nivel 1 Ejercicio 3 ###################################################################################
+
+// Crea una altra funció que mostri per consola el contingut 
+// del fitxer de l'exercici anterior.
+
 const leerFichero = () => {
     fs.readFile('./files/0-original/entrega5.txt', 'utf8',( err, data ) => {
         if(err){
             console.log( err.message );
         } else {
+            console.log('Contenido del fichero:')
             console.log(data);
         }
     })
 }
 
-// Nivel 2 Ejercicio 1
+leerFichero();
+
+// Nivel 2 Ejercicio 1 ###################################################################################
 /* Crea una funció que comprimeixi el fitxer del nivell 1. */
 const zlib = require('zlib');
 
@@ -51,14 +70,22 @@ const comprimirFichero = () => {
     const w = fs.createWriteStream('./files/0-original/entrega5.txt.gz');
     r.pipe(gzip).pipe(w);
 }
+comprimirFichero();
 
-// Nivel 2 Ejercicio 2
+// Nivel 2 Ejercicio 2 ###################################################################################
 /* Crea una funció que llisti per la consola el contingut del directori d'usuari de 
 l'ordinador utilizant Node Child Processes. */
 
 // en fichero 1.5-ContenidoDirectorio.js
+//TODO: ¿ESTÁ OK?
 
-// Nivel 3 Ejercicio 1
+const cp = require('child_process');
+cp.fork('1.5-ContenidoDirectorio.js');
+
+
+
+
+// Nivel 3 Ejercicio 1 ###################################################################################
 /*
 - Crea una funció que creï dos fitxers codificats en hexadecimal i en base64 respectivament, 
 a partir del fitxer del nivell 1
@@ -70,13 +97,14 @@ a generar una còpia de l'inicial
 */
 const codificarFichero = () => {
     let file;
+    crearEstructuraCarpetas();
     try {
         file = fs.readFileSync('./files/0-original/entrega5.txt', 'utf8');
     } catch ( err ){
         console.log( err.message );
         return
-    }
-    
+    }    
+
     try {
         fs.writeFileSync('./files/1-codified/entrega5_hex.txt', file, 'hex');
         fs.writeFileSync('./files/1-codified/entrega5_base64.txt', file, 'base64');        
@@ -153,31 +181,8 @@ const desencriptarFicheros = () => {
 }
 
 
+// codificarFichero();
 
-/* PRUEVA CÓDIGO */
-// Nivel 1 Ejercicio 1
- mensajeRepetido();
+// encriptarFicheros();
 
-// Nivel 1 Ejercicio 2
-escribirEnFichero("hola que tal");
-
-// Nivel 1 Ejercicio 3
-leerFichero();
-
-// Nivel 2 Ejercicio 1
-comprimirFichero();
-// ver carpeta files/0-original/entrega5.txt.gz
-
-// Nivel 2 Ejercicio 2
-//TODO: ¿ESTÁ OK?
-
-const cp = require('child_process');
-cp.fork('1.5-ContenidoDirectorio.js');
-
-// Nivel 3 Ejercicio 1
-
-codificarFichero();
-
-encriptarFicheros();
-
-desencriptarFicheros();
+// desencriptarFicheros();
