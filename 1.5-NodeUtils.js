@@ -47,6 +47,7 @@ escribirEnFichero("hola que tal");
 // del fitxer de l'exercici anterior.
 
 const leerFichero = () => {
+    /*
     fs.readFile('./files/0-original/entrega5.txt', 'utf8',( err, data ) => {
         if(err){
             console.log( err.message );
@@ -54,7 +55,16 @@ const leerFichero = () => {
             console.log('Contenido del fichero:')
             console.log(data);
         }
-    })
+    })*/
+    let fichero;
+    try {
+        fichero = fs.readFileSync('./files/0-original/entrega5.txt','utf8');
+        console.log('Contenido del fichero:')
+        console.log(fichero);
+    } catch ( err ) {
+        console.log( err.message );
+    }
+    
 }
 
 leerFichero();
@@ -70,6 +80,7 @@ const comprimirFichero = () => {
     const w = fs.createWriteStream('./files/0-original/entrega5.txt.gz');
     r.pipe(gzip).pipe(w);
 }
+
 comprimirFichero();
 
 // Nivel 2 Ejercicio 2 ###################################################################################
@@ -79,8 +90,9 @@ l'ordinador utilizant Node Child Processes. */
 // en fichero 1.5-ContenidoDirectorio.js
 //TODO: ¿ESTÁ OK?
 
-const cp = require('child_process');
-cp.fork('1.5-ContenidoDirectorio.js');
+// TODO: QUITAR COMENTARIO
+//const cp = require('child_process');
+//cp.fork('1.5-ContenidoDirectorio.js');
 
 
 
@@ -96,22 +108,46 @@ a generar una còpia de l'inicial
 - Inclou un README amb instruccions per a l'execució de cada part
 */
 const codificarFichero = () => {
-    let file;
-    crearEstructuraCarpetas();
+    let fileContent;
     try {
-        file = fs.readFileSync('./files/0-original/entrega5.txt', 'utf8');
+        fileContent = fs.readFileSync('./files/0-original/entrega5.txt', 'utf8');
     } catch ( err ){
         console.log( err.message );
         return
     }    
 
+    const buffer = Buffer.from(fileContent,"utf8");
+    let fileContentCodifiedHex = buffer.toString('hex');
+    let fileContentCodifiedBase64 = buffer.toString('base64');
+
+    //console.log(fileContentCodifiedBase64, fileContentCodifiedBase64);
+
     try {
-        fs.writeFileSync('./files/1-codified/entrega5_hex.txt', file, 'hex');
-        fs.writeFileSync('./files/1-codified/entrega5_base64.txt', file, 'base64');        
+        fs.writeFileSync('./files/1-codified/entrega5_hex.txt', fileContentCodifiedHex); // , 'hex' // TODO: DUDA: si añado la codificación al archivo el contenido se ve normal...
+        fs.writeFileSync('./files/1-codified/entrega5_base64.txt', fileContentCodifiedBase64);  // , 'base64'         
     } catch ( err ){
         console.log( err.message );
     }       
 }
+/* Esta función no pertenece a ninguna práctica (fines educativos 🤓)
+const decodificarFichero = () => {
+    let file, file2;
+    try {
+        file_hex = fs.readFileSync('./files/1-codified/entrega5_hex.txt','hex');
+        file_base64 = fs.readFileSync('./files/1-codified/entrega5_base64.txt','base64');
+    } catch ( err ){
+        console.log( err.message );
+        return
+    }    
+
+    const bufferHex = Buffer.from(file_hex,'hex');
+    const bufferBase64 = Buffer.from(file_base64, 'base64');
+    const fileUtf8FromHex = bufferHex.toString('utf8');
+    const fileUtf8FromBase64 = bufferBase64.toString('utf8')
+
+    console.log('hex',fileUtf8FromHex);
+    console.log('base64',fileUtf8FromBase64);
+}*/
 
 const crypto = require("crypto");
 const clave ="holaquetalsoylaclave";                    // ¿? clave privada
@@ -180,9 +216,10 @@ const desencriptarFicheros = () => {
     } 
 }
 
+crearEstructuraCarpetas();  //no sería necesario si se ha ejecutado previamente (N1E2)
+codificarFichero();
 
-// codificarFichero();
+encriptarFicheros();
 
-// encriptarFicheros();
+desencriptarFicheros();
 
-// desencriptarFicheros();
